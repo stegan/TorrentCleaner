@@ -9,9 +9,9 @@
             <cleaners>
                 <cleaner>
                     <type>SpeedCleaner</type>
-                    <!-- minimum upload speed that should be targeted -->
+                    <!-- minimum upload speed (bytes per second) that should be targeted -->
                     <minUploadSpeed>10000</minUploadSpeed>
-                    <!-- frame of time for monitoring -->
+                    <!-- frame of time in ms for monitoring -->
                     <monitoringTime>60000</monitoringTime>
                     <!-- period of sleep in ms for checking -->
                     <checkPeriod>10000</checkPeriod>
