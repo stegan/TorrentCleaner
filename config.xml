@@ -3,7 +3,7 @@
     <torrent-clients>
         <torrent-client>
             <type>UTorrentClient</type>
-            <url>http://yourip:yourport/gui/</url>
+            <url>http://yourip:yourport/gui</url>
             <login>login</login>
             <password>pass</password>
             <cleaners>
