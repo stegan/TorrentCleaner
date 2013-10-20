@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <torrent-clients>
+        <torrent-client>
+            <type>UTorrentClient</type>
+            <url>http://yourip:yourport/gui/</url>
+            <login>login</login>
+            <password>pass</password>
+            <cleaners>
+                <cleaner>
+                    <type>SpeedCleaner</type>
+                    <!-- minimum upload speed that should be targeted -->
+                    <minUploadSpeed>10000</minUploadSpeed>
+                    <!-- frame of time for monitoring -->
+                    <monitoringTime>60000</monitoringTime>
+                    <!-- period of sleep in ms for checking -->
+                    <checkPeriod>10000</checkPeriod>
+                </cleaner>
+                <cleaner>
+                    <type>RatioCleaner</type>
+                    <!-- minimum rating -->
+                    <minRating>5</minRating>
+                    <!-- period of sleep in ms for checking -->
+                    <checkPeriod>36000000</checkPeriod>
+                </cleaner>
+            </cleaners>
+        </torrent-client>
+    </torrent-clients>
+</config>
