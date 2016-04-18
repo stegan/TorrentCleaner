@@ -1,5 +1,6 @@
 package net.stegantsov.torrent.cleaner;
 
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import net.stegantsov.torrent.client.Client;
 import net.stegantsov.torrent.client.TorrentData;
 
@@ -20,11 +21,14 @@ public abstract class AbstractCleaner implements Cleaner {
 
     private final Client client;
     private final long checkPeriod;
+    private final long errorPeriod;
 
     protected AbstractCleaner(Client client,
-                              long checkPeriod) {
+                              long checkPeriod,
+                              long errorPeriod) {
         this.client = client;
         this.checkPeriod = checkPeriod;
+        this.errorPeriod = errorPeriod;
     }
 
     @Override
@@ -33,27 +37,37 @@ public abstract class AbstractCleaner implements Cleaner {
                 + ". Check period: " + checkPeriod);
         while (true) {
             try {
-                LOG.debug(Thread.currentThread() + ":" + super.toString() + " Start");
-                List<TorrentData> torrents = client.getTorrents();
-                LOG.debug(Thread.currentThread() + ":" + super.toString() + " Torrents for client: " + torrents);
-                List<TorrentData> toDelete = perform(torrents);
-                LOG.debug(Thread.currentThread() + ":" + super.toString() + " Torrents that will be deleted: "
-                        + toDelete);
-                for (TorrentData torrent : toDelete) {
-                    LOG.info(this + ". Torrent with hash " + torrent.getHash() + " will be deleted for client "
-                            + client);
-                    client.delete(torrent.getHash());
+                try {
+                    LOG.debug(Thread.currentThread() + ":" + super.toString() + " Start");
+                    List<TorrentData> torrents = client.getTorrents();
+                    LOG.debug(Thread.currentThread() + ":" + super.toString() + " Torrents for client: " + torrents);
+                    List<TorrentData> toDelete = perform(torrents);
+                    LOG.debug(Thread.currentThread() + ":" + super.toString() + " Torrents that will be deleted: "
+                            + toDelete);
+                    for (TorrentData torrent : toDelete) {
+                        LOG.info(this + ". Torrent with hash " + torrent.getHash() + " will be deleted for client "
+                                + client);
+                        client.delete(torrent.getHash());
+                    }
+                    if (checkPeriod > 0) {
+                        LOG.debug(Thread.currentThread() + ":" + super.toString() + ". Sleep for " + checkPeriod
+                                + " ms");
+                        Thread.sleep(checkPeriod);
+                    } else {
+                        LOG.debug(Thread.currentThread() + ":" + super.toString() + ". Finish");
+                        break;
+                    }
+                } catch (FailingHttpStatusCodeException | IOException e) {
+                    LOG.error(Thread.currentThread() + ":" + super.toString() + ". " + e);
+                    if (errorPeriod > 0) {
+                        LOG.debug(Thread.currentThread() + ":" + super.toString() + ". Sleep because of error for "
+                                + errorPeriod + " ms");
+                        Thread.sleep(errorPeriod);
+                    } else {
+                        LOG.debug(Thread.currentThread() + ":" + super.toString() + ". Finish because of error");
+                        break;
+                    }
                 }
-                if (checkPeriod > 0) {
-                    LOG.debug(Thread.currentThread() + ":" + super.toString() + ". Sleep");
-                    Thread.sleep(checkPeriod);
-                } else {
-                    LOG.debug(Thread.currentThread() + ":" + super.toString() + ". Finish");
-                    break;
-                }
-            } catch (IOException e) {
-                LOG.error(Thread.currentThread() + ":" + super.toString() + ". IOException: " + e);
-                break;
             } catch (InterruptedException e) {
                 break;
             }

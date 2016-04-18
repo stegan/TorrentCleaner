@@ -113,6 +113,10 @@ public final class ConfigLoader {
         if (checkPeriod == null || checkPeriod.toString().isEmpty()) {
             throw new ConfigurationException("cleaner's checkPeriod should be set for client: " + client);
         }
+        Object errorPeriod = configuration.getProperty(prefix + ".errorPeriod");
+        if (errorPeriod == null || errorPeriod.toString().isEmpty()) {
+            errorPeriod = "60000";
+        }
         Cleaner cleaner;
         if ("SpeedCleaner".equalsIgnoreCase(cleanerType.toString())) {
             Object minUploadSpeed = configuration.getProperty(prefix + ".minUploadSpeed");
@@ -127,6 +131,7 @@ public final class ConfigLoader {
 
             cleaner = CleanerFactory.createSpeedCleaner(client,
                     Long.parseLong(checkPeriod.toString()),
+                    Long.parseLong(errorPeriod.toString()),
                     Integer.parseInt(minUploadSpeed.toString()),
                     Long.parseLong(monitoringTime.toString()));
 
@@ -138,6 +143,7 @@ public final class ConfigLoader {
 
             cleaner = CleanerFactory.createRatioCleaner(client,
                     Long.parseLong(checkPeriod.toString()),
+                    Long.parseLong(errorPeriod.toString()),
                     Double.parseDouble(minRating.toString()));
         } else {
             throw new ConfigurationException("unknown cleaner for client: " + client);

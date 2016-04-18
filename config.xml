@@ -15,6 +15,9 @@
                     <monitoringTime>60000</monitoringTime>
                     <!-- period of sleep in ms for checking -->
                     <checkPeriod>10000</checkPeriod>
+                    <!-- period of sleep in ms if error occupied (e.g. timeout or http error).
+                    default value - 60 sec. -->
+                    <errorPeriod>30000</errorPeriod>
                 </cleaner>
                 <cleaner>
                     <type>RatioCleaner</type>
@@ -22,6 +25,9 @@
                     <minRating>5</minRating>
                     <!-- period of sleep in ms for checking -->
                     <checkPeriod>36000000</checkPeriod>
+                    <!-- period of sleep in ms if error occupied (e.g. timeout or http error).
+                    default value - 60 sec. -->
+                    <errorPeriod>30000</errorPeriod>
                 </cleaner>
             </cleaners>
         </torrent-client>

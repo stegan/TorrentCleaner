@@ -63,7 +63,7 @@ public class RatioCleanerTest {
             }
         };
 
-        new RatioCleaner(stubClient, 0, 5).run();
+        new RatioCleaner(stubClient, 0, 0, 5).run();
         assertTrue(actualDeleted.containsAll(expectedDeleted)
                 && expectedDeleted.containsAll(actualDeleted));
     }

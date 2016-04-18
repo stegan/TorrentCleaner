@@ -61,15 +61,18 @@ public final class SpeedCleaner extends AbstractCleaner {
      *
      * @param client         - {@link net.stegantsov.torrent.client.Client}.
      * @param checkPeriod    - period of sleep in ms between checks.
+     * @param errorPeriod    - period of sleep in ms for next check if error occupied.
      * @param minUploadSpeed - minimum upload speed for saving torrent.
      * @param monitoringTime - monitoring time for average speed.
      */
     public SpeedCleaner(final Client client,
                         final long checkPeriod,
+                        final long errorPeriod,
                         final int minUploadSpeed,
                         final long monitoringTime) {
         super(client,
-                checkPeriod);
+                checkPeriod,
+                errorPeriod);
         this.minUploadSpeed = minUploadSpeed;
         this.monitoringTime = monitoringTime;
 

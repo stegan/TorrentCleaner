@@ -25,13 +25,16 @@ public final class RatioCleaner extends AbstractCleaner {
      *
      * @param client      - {@link net.stegantsov.torrent.client.Client}.
      * @param checkPeriod - period of sleep in ms between checks.
+     * @param errorPeriod - period of sleep in ms for next check if error occupied.
      * @param minRating   - minimum rating for saving torrent.
      */
     public RatioCleaner(final Client client,
                         final long checkPeriod,
+                        final long errorPeriod,
                         final double minRating) {
         super(client,
-                checkPeriod);
+                checkPeriod,
+                errorPeriod);
         this.minRating = minRating;
     }
 

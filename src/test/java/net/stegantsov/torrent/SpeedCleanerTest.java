@@ -70,7 +70,7 @@ public class SpeedCleanerTest {
             }
         };
 
-        new SpeedCleaner(stubClient, 0, 10000, 0).run();
+        new SpeedCleaner(stubClient, 0, 0, 10000, 0).run();
         assertTrue(actualDeleted.containsAll(expectedDeleted)
                 && expectedDeleted.containsAll(actualDeleted));
     }
